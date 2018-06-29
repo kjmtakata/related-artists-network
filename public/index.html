@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Related Artists Visualizer</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material-data-table/0.10.8/md-data-table.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<!-- Angular Material Dependencies -->
+	    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script> 
+	    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script> 
+	    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script> 
+	    
+	    <!-- Angular Material Javascript now available via Google CDN; version 0.9.4 used here -->
+	    <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script> 
+
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material-data-table/0.10.8/md-data-table.min.js"></script>
+
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
+
+		<script src="RelatedArtistsController.js"></script>
+
+		<script>
+		$(function() {
+			$("#mynetwork").height("calc(100% - "+$("#search_container").height()+"px - "+$("#player").height()+"px)");
+		});	
+		</script>
+
+		<style>
+		html, body, #bodyContainer {
+			height: 100%;
+			overflow: hidden;
+		}
+		/*md-input-container {
+			padding-bottom: 0;
+			margin-bottom: 0;
+		}*/
+		</style>
+
+		
+		
+	</head>
+	<body ng-app="RelatedArtistsApp">
+		<div ng-controller="RelatedArtistsController" id="bodyContainer">
+			<div id="search_container">
+				<form>
+					<!-- <md-card> -->
+
+						<div layout="row">
+
+							<md-autocomplete
+								flex
+								md-selected-item="selectedItem" 
+								md-search-text="searchText" 
+								md-items="item in autocomplete(searchText)" 
+								md-item-text="item.display"
+								md-selected-item-change="doSearch(item.value)"
+								md-autofocus
+								placeholder="Artist"
+								md-floating-label="Artist">
+								<md-item-template>
+									<span md-highlight-text="searchText">{{item.display}}</span>
+								</md-item-template>
+							</md-autocomplete>
+
+							<md-input-container style="padding-below" flex="10" flex-xs="20">
+								<label>Breadth</label>
+								<input type="number" ng-model="breadth" min="1" max="10">
+							</md-input-container>
+
+							<md-input-container flex="10" flex-xs="20">
+								<label>Depth</label>
+								<input type="number" ng-model="depth" min="1" max="7">
+							</md-input-container>
+
+						</div>
+
+						<md-progress-linear md-mode="indeterminate" ng-show="isSearching"></md-progress-linear>
+
+						<!-- <iframe src="https://open.spotify.com/embed?uri=spotify%3Atrack%3A33Q6ldVXuJyQmqs8BmAa0k" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe> -->
+
+						<md-divider></md-divider>
+
+					<!-- </md-card> -->
+
+				</form>
+				
+
+			</div>
+			<div id="mynetwork"></div>
+			<iframe id="player" ng-src="{{playerUrl}}" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+		</div>
+	</body>
+
+</html>
