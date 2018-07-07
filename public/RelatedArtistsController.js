@@ -13,10 +13,12 @@ app.controller('RelatedArtistsController', ['$scope', '$http', '$q', '$sce', fun
 	$scope.playerUrl = $sce.trustAsResourceUrl("");
 
 	$scope.autocomplete = function() {
-		return authGet("https://api.spotify.com/v1/search", {
-			q: $scope.searchText+"*",
-			type: "artist"
-		}, function(response) {
+		return $http.get("/spotify/search", {
+			params: {
+				q: $scope.searchText+"*",
+				type: "artist"
+			}
+		}).then(function(response) {
 			var results = [];
 			angular.forEach(response.data.artists.items, function(artist) {
 				results.push({
@@ -110,9 +112,11 @@ app.controller('RelatedArtistsController', ['$scope', '$http', '$q', '$sce', fun
 		    network.on("click", function(params) {
 		    	console.log(params);
 		    	if(params.nodes.length == 1) {
-		    		authGet("https://api.spotify.com/v1/artists/"+params.nodes[0]+"/top-tracks", {
-						country: "US"
-					}, function(response) {
+		    		$http.get("/spotify/artists/"+params.nodes[0]+"/top-tracks", {
+						params: {
+							country: "US"
+						}
+					}).then(function(response) {
 						console.log(response);
 						var url = "https://open.spotify.com/embed?theme=black&uri=" 
 									+ response.data.tracks[0].uri;
@@ -135,9 +139,11 @@ app.controller('RelatedArtistsController', ['$scope', '$http', '$q', '$sce', fun
 		    	}
 		    });
 
-		    authGet("https://api.spotify.com/v1/artists/"+$scope.selectedItem.value+"/top-tracks", {
-				country: "US"
-			}, function(response) {
+		    $http.get("/spotify/artists/"+$scope.selectedItem.value+"/top-tracks", {
+				params: {
+					country: "US"
+				}
+			}).then(function(response) {
 				console.log(response);
 				var url = "https://open.spotify.com/embed?theme=black&uri=" 
 							+ response.data.tracks[0].uri;
@@ -163,9 +169,11 @@ app.controller('RelatedArtistsController', ['$scope', '$http', '$q', '$sce', fun
 	var generateRelatedArtists = function(sourceNode, curDepth) {
 		sourceNode.done = true;
 		console.log(sourceNode);
-		return authGet("https://api.spotify.com/v1/artists/"+sourceNode.id+"/related-artists", {
-			id: sourceNode.id
-		}, function(response) {
+		return $http.get("/spotify/artists/"+sourceNode.id+"/related-artists", {
+			params: {
+				id: sourceNode.id
+			}
+		}).then(function(response) {
 			console.log(response);
 
 			var artist;
@@ -227,6 +235,6 @@ app.controller('RelatedArtistsController', ['$scope', '$http', '$q', '$sce', fun
 		});
 	};
 
-	init();
+	// init();
 
 }]);
