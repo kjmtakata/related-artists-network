@@ -38,6 +38,27 @@ app.get("/token", function (req, res) {
 	postreq.end();
 });
 
+app.get("/search", function(req, res) {
+        var options = {
+		host: 'api.spotify.com',
+		path: req.url,
+		method: 'GET',
+		headers: {
+			'Authorization': req.getHeader('Authorization')
+		} 
+        };
+	var getreq = https.request(options, function(response) {
+		response.on('data', function(d) {
+			res.write(d);
+		});
+		response.on('end', function() {
+			res.end();
+		});
+        }).on('error', function(e) {
+		console.error(e);
+	});
+});
+
 app.listen(8080, function () {
 	console.log('app listening on port 8080!');
 });
