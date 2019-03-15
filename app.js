@@ -6,6 +6,7 @@ var querystring = require("querystring");
 var request = require("request");
 var rp = require("request-promise-native");
 var token = "test";
+var port = process.env.PORT || 5000;
 // var bodyParser = require('body-parser');
 
 // returns promise of token response
@@ -61,6 +62,6 @@ app.get("/spotify/\*", function(req, res) {
     });
 });
 
-app.listen(8080, function () {
-	console.log('app listening on port 8080');
+app.listen(port, function () {
+	console.log('app listening on port ' + port);
 });
