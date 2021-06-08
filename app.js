@@ -7,7 +7,6 @@ var request = require("request");
 var rp = require("request-promise-native");
 var token = "test";
 var port = process.env.PORT || 5000;
-// var bodyParser = require('body-parser');
 
 // returns promise of token response
 var getToken = function() {
@@ -27,7 +26,6 @@ var getToken = function() {
 	}).then(function(body) {
 		var body = JSON.parse(body);
 		token = body.access_token;
-		console.log(body);
 	});
 };
 
